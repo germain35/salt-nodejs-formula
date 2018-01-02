@@ -1,0 +1,30 @@
+# -*- coding: utf-8 -*-
+# vim: ft=jinja
+
+{%- set os         = salt['grains.get']('os') %}
+{%- set osrelease  = salt['grains.get']('osrelease') %}
+{%- set oscodename = salt['grains.get']('oscodename') %}
+
+{## start with defaults from defaults.yaml ##}
+{% import_yaml "nodejs/defaults.yaml" as defaults %}
+
+{% set nodejs = salt['pillar.get']( 'nodejs', default=defaults.nodejs, merge=True) %}
+
+{% set version       = "%s"|format(nodejs.version) %}
+{% set major_version = version.split('.')[0]|int %}
+
+{% set os_map = salt['grains.filter_by']({
+    'Debian': {
+        'pkg': 'nodejs',
+        'major_version': major_version,
+        'repo': {
+            'humanname': 'nodejs',
+            'name': 'deb https://deb.nodesource.com/node_' ~ major_version ~ '  .x ' ~ oscodename ~  ' main',
+            'file': '/etc/apt/sources.list.d/nodesource.list',
+            'key_url': 'https://deb.nodesource.com/gpgkey/nodesource.gpg.key',
+        }
+    },
+}, grain='os_family', merge=salt['pillar.get']('nodejs:lookup'), default='Debian') %}
+
+{% do nodejs.update(os_map) %}
+
