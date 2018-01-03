@@ -1,3 +1,6 @@
 nodejs:
   manage_repo: False
   version: 8
+  debug_pkg_state: removed
+  dev_pkg_state: removed
+  npm_pkg_state: removed
