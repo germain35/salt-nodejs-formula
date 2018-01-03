@@ -15,6 +15,7 @@
 
 {% set os_map = salt['grains.filter_by']({
     'Debian': {
+        'pkg': 'nodejs',
         'debug_pkg': 'nodejs-dbg',
         'dev_pkg': 'null',
         'npm_pkg': 'null',
