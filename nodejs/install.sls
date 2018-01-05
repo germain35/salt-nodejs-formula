@@ -6,10 +6,10 @@ include:
 nodejs_package:
   pkg.installed:
     - name: {{ nodejs.pkg }}
+    {%- if nodejs.manage_repo %}
     - require:
-      {%- if nodejs.manage_repo %}
       - sls: nodejs.repo
-      {%- endif %}
+    {%- endif %}
 
 {%- if nodejs.debug_pkg is defined and nodejs.debug_pkg != 'null' %}
 nodejs_debug_package:
