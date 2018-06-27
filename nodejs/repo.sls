@@ -17,7 +17,7 @@ nodejs_apts_pkg:
   {%- if 'repo' in nodejs and nodejs.repo is mapping %}
 nodejs_repo:
   pkgrepo.managed:
-    {%- for k, v in nodejs.repo.iteritems() %}
+    {%- for k, v in nodejs.repo.items() %}
     - {{k}}: {{v}}
     {%- endfor %}
   {%- endif %}
